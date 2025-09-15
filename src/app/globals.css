@@ -2,118 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Color tokens sederhana */
-:root {
-  --brand: #facc15;          /* yellow-400 */
-  --brand-900: #ca8a04;      /* yellow-600-ish */
-  --accent: #22c55e;         /* emerald-500 */
+/* Prefer dark appearance */
+@layer base {
+  html {
+    color-scheme: dark;
+  }
 }
 
-/* Background halaman (gradasi + vignette) */
-.bg-hero {
+/* Mesh/dot background to mimic wireframe vibe */
+.mesh-grid {
   background-image:
-    radial-gradient(1200px 600px at 80% 10%, rgba(34,197,94,0.14), transparent 60%),
-    radial-gradient(900px 500px at 20% 20%, rgba(59,130,246,0.12), transparent 60%),
-    linear-gradient(180deg, #0b0f19 0%, #0a131a 40%, #070b12 100%);
+    radial-gradient(rgba(16,185,129,0.22) 1px, transparent 1px),
+    radial-gradient(rgba(16,185,129,0.10) 1px, transparent 1px);
+  background-size: 12px 12px, 24px 24px;
+  background-position: 0 0, 6px 6px;
 }
 
-/* Grid pattern background via data-URI (bukan inline style) */
-.bg-grid {
-  background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%231f2937' stroke-opacity='0.4'%3E%3Cpath d='M32 0H0v32'/%3E%3Cpath d='M32 16H0'/%3E%3Cpath d='M16 0v32'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 32px 32px;
+/* Wireframe heart using inline SVG data URI (no inline style) */
+.heart-wire {
+  background-image: url("data:image/svg+xml,%3Csvg width='320' height='320' viewBox='0 0 320 320' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M160 292 C 132 268 82 240 70 190 C 60 144 86 112 118 116 C 138 118 160 144 160 144 C 160 144 182 118 202 116 C 234 112 260 144 250 190 C 238 240 188 268 160 292 Z' stroke='%2310b981' stroke-width='2' stroke-dasharray='6 6' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  filter: drop-shadow(0 0 16px rgba(16,185,129,0.35));
 }
 
-/* Reusable components via @apply (hindari inline CSS) */
-@layer components {
-  .container-padded {
-    @apply container mx-auto px-4 sm:px-6 lg:px-8;
-  }
-
-  .section {
-    @apply py-12 md:py-20;
-  }
-
-  .badge {
-    @apply inline-flex items-center gap-2 rounded-full border border-slate-700/60 bg-slate-900/60 px-3 py-1 text-xs font-medium text-slate-300;
-  }
-
-  .headline {
-    @apply text-4xl md:text-6xl font-extrabold leading-tight;
-  }
-
-  .subhead {
-    @apply mt-3 max-w-xl text-slate-300;
-  }
-
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 font-semibold transition ease-out duration-200;
-  }
-
-  .btn-primary {
-    @apply btn bg-[color:var(--brand)] text-slate-900 hover:bg-yellow-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300/40 active:scale-[0.98];
-  }
-
-  .btn-ghost {
-    @apply btn bg-white/5 text-white hover:bg-white/10 border border-white/10;
-  }
-
-  .card {
-    @apply rounded-xl border border-slate-800/80 bg-slate-900/60 p-6 shadow-lg backdrop-blur-md;
-  }
-
-  .card-strong {
-    @apply rounded-xl border-2 border-slate-600 bg-slate-900/70 p-6 shadow-xl;
-  }
-
-  .chip {
-    @apply rounded-md bg-slate-800 px-2.5 py-1 text-[11px] uppercase tracking-wide text-slate-300;
-  }
-
-  .glass {
-    @apply bg-white/5 backdrop-blur-md border border-white/10;
-  }
-
-  .timeline {
-    @apply relative mx-auto max-w-4xl;
-  }
-
-  .timeline::before {
-    content: "";
-    @apply absolute left-0 right-0 top-5 mx-6 hidden h-0.5 bg-slate-700/50 md:block;
-  }
-
-  .nav-link {
-    @apply text-sm text-slate-300 hover:text-white transition-colors;
-  }
-
-  .kbd {
-    @apply rounded border border-slate-700/70 bg-slate-800/60 px-1.5 py-0.5 text-[11px] font-semibold text-slate-300;
-  }
-}
-
-/* Custom animations */
+/* Subtle floating animation for decorative shapes */
 @keyframes floaty {
-  0% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(1deg); }
-  100% { transform: translateY(0px) rotate(0deg); }
+  0%, 100% { transform: translateY(0) }
+  50% { transform: translateY(-10px) }
 }
-.animate-float {
-  animation: floaty 6s ease-in-out infinite;
-}
-
-/* Optional subtle glow for strokes */
-.glow {
-  filter: drop-shadow(0 0 18px rgba(34,197,94,.35));
+.animate-floaty {
+  animation: floaty 8s ease-in-out infinite;
 }
 
-/* Typography helpers for practice */
-.post h2 { @apply text-2xl md:text-3xl font-extrabold text-white mt-2; }
-.post p  { @apply text-slate-300 leading-7; }
-.post a  { @apply text-emerald-400 underline underline-offset-4 hover:text-emerald-300; }
-.post blockquote { @apply border-l-4 border-emerald-500 pl-4 italic text-slate-200; }
-
-/* Demonstrasi advanced utilities dengan class (tanpa style attribute) */
-.gallery-card {
-  @apply relative aspect-[4/3] rounded-xl overflow-hidden border border-slate-800 bg-slate-900/60 shadow-md transition duration-300 ease-out;
+/* Small helper to get a soft inner highlight on cards */
+.card-sheen {
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
 }
-.gallery-card:hover { @apply scale-[1.01] shadow-xl; }
+
+/* Optional dotted divider utility */
+@layer utilities {
+  .divider-dashed {
+    background-image: linear-gradient(to right, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0) 0%);
+    background-size: 16px 2px;
+    background-repeat: repeat-x;
+    height: 2px;
+  }
+}
